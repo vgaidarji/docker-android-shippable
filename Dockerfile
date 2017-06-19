@@ -31,7 +31,7 @@ RUN echo "d975f751698a77b662f1254ddbeed3901e976f5a" > /opt/android-sdk/licenses/
 RUN wget -O android-sdk.zip https://dl.google.com/android/repository/tools_r25.2.3-linux.zip
 RUN unzip -a android-sdk.zip
 RUN rm android-sdk.zip
-RUN mv /opt/tools /opt/android-sdk/tools
+RUN mv /tools /opt/android-sdk/tools
 RUN echo 'y' | android update sdk --no-ui -a --filter platform-tools,build-tools-25.0.2,android-25,extra-android-support,extra-google-support,extra-google-google_play_services,extra-google-m2repository,extra-android-m2repository --force
 RUN rm -rf /opt/android-sdk/add-ons
 RUN rm /opt/jdk1.8.0_65/src.zip
