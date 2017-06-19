@@ -1,8 +1,8 @@
 FROM phusion/baseimage
 
-ENV JAVA8_HOME=/opt/jdk1.8.0_65 \
+ENV JAVA_HOME=/usr/lib/jvm/java-8-oracle \
   ANDROID_HOME=/opt/android-sdk \
-  PATH="$PATH:/opt/jdk1.8.0_65/bin:/opt/android-sdk/tools:/opt/android-sdk/platform-tools"
+  PATH="$PATH:/usr/lib/jvm/java-8-oracle/bin:/opt/android-sdk/tools:/opt/android-sdk/platform-tools"
 
 RUN apt-get update -qq
 RUN apt-get install -y --no-install-recommends wget lib32stdc++6 libqt5widgets5 lib32z1 unzip
@@ -11,10 +11,14 @@ RUN apt-get install -y awscli
 ###################
 # JDK8
 ###################
-RUN cd /opt
-RUN wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" -O jdk8.tar.gz http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.tar.gz
-RUN tar xzf jdk8.tar.gz
-RUN rm jdk8.tar.gz
+RUN \
+  echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
+  add-apt-repository -y ppa:webupd8team/java && \
+  apt-get update && \
+  apt-get install -y oracle-java8-installer && \
+  rm -rf /var/lib/apt/lists/* && \
+  rm -rf /var/cache/oracle-jdk8-installer
+RUN java -version
 
 ##################
 # Android licenses
@@ -32,10 +36,13 @@ RUN wget -O android-sdk.zip https://dl.google.com/android/repository/tools_r25.2
 RUN unzip -a android-sdk.zip
 RUN rm android-sdk.zip
 RUN mv /tools /opt/android-sdk/tools
+RUN echo $ANDROID_HOME
+RUN echo $PATH
+RUN ls -al /opt
+RUN ls -al /opt/android-sdk
+RUN ls -al /opt/android-sdk/tools
 RUN echo 'y' | android update sdk --no-ui -a --filter platform-tools,build-tools-25.0.2,android-25,extra-android-support,extra-google-support,extra-google-google_play_services,extra-google-m2repository,extra-android-m2repository --force
 RUN rm -rf /opt/android-sdk/add-ons
-RUN rm /opt/jdk1.8.0_65/src.zip
-RUN rm /opt/jdk1.8.0_65/javafx-src.zip
 
 ##################
 # Speeding up android builds
