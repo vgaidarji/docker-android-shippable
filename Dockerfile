@@ -7,6 +7,7 @@ ENV JAVA_HOME=/usr/lib/jvm/java-8-oracle \
 RUN apt-get update -qq
 RUN apt-get install -y --no-install-recommends wget lib32stdc++6 libqt5widgets5 lib32z1 unzip
 RUN apt-get install -y awscli
+RUN apt-get install -y expect
 
 ###################
 # JDK8
