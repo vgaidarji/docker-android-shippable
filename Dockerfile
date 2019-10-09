@@ -2,7 +2,7 @@ FROM phusion/baseimage
 
 ENV JAVA_HOME=/usr/lib/jvm/java-8-oracle \
   ANDROID_HOME=/opt/android-sdk \
-  PATH="$PATH:/usr/lib/jvm/java-8-oracle/bin:/opt/android-sdk/tools:/opt/android-sdk/platform-tools"
+  PATH="$PATH:/usr/lib/jvm/java-8-oracle/bin:/opt/android-sdk/tools:/opt/android-sdk/tools/bin:/opt/android-sdk/platform-tools"
 
 RUN apt-get update -qq
 RUN apt-get install -y --no-install-recommends wget lib32stdc++6 libqt5widgets5 lib32z1 unzip
